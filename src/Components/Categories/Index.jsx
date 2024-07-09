@@ -43,6 +43,12 @@ function Index() {
     }
   };
 
+  const handleDeleteClick = (id) => {
+    if (window.confirm('Are you sure to deleting this category')) {
+      deleteCategory(id);
+    }
+  };
+
   return (
     <div className=''>
       <h2 className='text-center text-neutral-950 m-5 font-bo'>
@@ -76,7 +82,7 @@ function Index() {
                         Edit
                       </Link>
                       <button
-                        onClick={() => deleteCategory(item.id)}
+                        onClick={() => handleDeleteClick(item.id)}
                         className='text-red-600 hover:text-red-800'
                       >
                         Delete
