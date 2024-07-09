@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Add() {
   const [categoryName, setCategoryName] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     setCategoryName(event.target.value);
@@ -26,6 +28,9 @@ function Add() {
       if (response.status === 200) {
         setMessage('Kategori berhasil ditambahkan!');
         setCategoryName('');
+        setTimeout(() => {
+          navigate('/');
+        }, 1500);
       } else {
         setMessage(
           `Gagal menambahkan kategori. Status code: ${response.status}`
