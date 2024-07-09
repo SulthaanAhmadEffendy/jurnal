@@ -37,6 +37,9 @@ function Index() {
         }
       );
       setMessage('Category deleted successfully.');
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
       fetchCategories();
     } catch (error) {
       console.log('Error deleting category:', error);
@@ -77,7 +80,7 @@ function Index() {
                     <td className='py-3 px-4'>
                       <Link
                         to={`/edit/${item.id}`}
-                        className='text-blue-500 hover:text-blue-700 mr-4'
+                        className='text-yellow-300 hover:text-yellow-700 mr-4'
                       >
                         Edit
                       </Link>

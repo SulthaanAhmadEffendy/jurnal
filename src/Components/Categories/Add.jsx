@@ -27,6 +27,9 @@ function Add() {
 
       if (response.status === 200) {
         setMessage('Kategori berhasil ditambahkan!');
+        setTimeout(() => {
+          setMessage('');
+        }, 3000);
         setCategoryName('');
         setTimeout(() => {
           navigate('/');
@@ -35,6 +38,9 @@ function Add() {
         setMessage(
           `Gagal menambahkan kategori. Status code: ${response.status}`
         );
+        setTimeout(() => {
+          setMessage('');
+        }, 3000);
       }
     } catch (error) {
       console.error('Error adding category:', error);

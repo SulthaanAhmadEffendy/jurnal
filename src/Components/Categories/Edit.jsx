@@ -49,12 +49,19 @@ function Edit() {
       if (response.status === 200) {
         setMessage('Category updated successfully.');
         setTimeout(() => {
+          setMessage('');
+        }, 3000);
+
+        setTimeout(() => {
           navigate('/');
         }, 1500);
       } else {
         setMessage(
           `Failed to update category. Status code: ${response.status}`
         );
+        setTimeout(() => {
+          setMessage('');
+        }, 3000);
       }
     } catch (error) {
       console.error('Error updating category:', error);
