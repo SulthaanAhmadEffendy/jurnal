@@ -6,33 +6,40 @@ export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        'https://journal.bariqfirjatullah.pw/api/auth/login',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        }
+      );
 
-    const response = await fetch(
-      'https://journal.bariqfirjatullah.pw/api/auth/login',
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.data.token);
+        console.log('Login successful');
+        navigate('/dashboard/home');
+      } else {
+        console.error('Login failed', data);
       }
-    );
-
-    const data = await response.json();
-
-    if (response.ok) {
-      localStorage.setItem('token', data.data.token);
-      console.log('Login successful');
-      navigate('/dashboard/home');
-    } else {
-      console.error('Login failed', data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -94,7 +101,7 @@ export function SignIn() {
           </div>
 
           <Button className='mt-6' fullWidth type='submit'>
-            Sign In
+            {isLoading == true ? 'Loading' : 'Sign In'}
           </Button>
 
           <div className='flex items-center justify-between gap-2 mt-6'></div>

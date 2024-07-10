@@ -14,6 +14,7 @@ function Add() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.post(
         'https://journal.bariqfirjatullah.pw/api/category',
         { name: categoryName },
@@ -21,6 +22,7 @@ function Add() {
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -32,7 +34,7 @@ function Add() {
         }, 3000);
         setCategoryName('');
         setTimeout(() => {
-          navigate('/');
+          navigate('/dashboard/categories');
         }, 1500);
       } else {
         setMessage(

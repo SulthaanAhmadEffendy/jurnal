@@ -24,24 +24,24 @@ export const routes = [
         path: '/categories',
         element: <Index />,
       },
-      {
-        icon: <UserCircleIcon {...icon} />,
-        name: 'profile',
-        path: '/profile',
-        element: <Profile />,
-      },
+      // {
+      //   icon: <UserCircleIcon {...icon} />,
+      //   name: 'profile',
+      //   path: '/profile',
+      //   element: <Profile />,
+      // },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: 'tables',
+        name: 'journal',
         path: '/tables',
         element: <Tables />,
       },
-      {
-        icon: <InformationCircleIcon {...icon} />,
-        name: 'notifications',
-        path: '/notifications',
-        element: <Notifications />,
-      },
+      // {
+      //   icon: <InformationCircleIcon {...icon} />,
+      //   name: 'notifications',
+      //   path: '/notifications',
+      //   element: <Notifications />,
+      // },
     ],
   },
   {

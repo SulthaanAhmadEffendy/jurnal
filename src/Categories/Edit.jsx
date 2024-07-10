@@ -14,11 +14,13 @@ function Edit() {
 
   const getCategoryById = async () => {
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.get(
         `https://journal.bariqfirjatullah.pw/api/category/${id}`,
         {
           headers: {
             Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -34,6 +36,7 @@ function Edit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token');
     try {
       const response = await axios.put(
         `https://journal.bariqfirjatullah.pw/api/category/${id}`,
@@ -42,6 +45,7 @@ function Edit() {
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -53,7 +57,7 @@ function Edit() {
         }, 3000);
 
         setTimeout(() => {
-          navigate('/');
+          navigate('/dashboard/categories');
         }, 1500);
       } else {
         setMessage(
