@@ -7,10 +7,18 @@ export function SignIn() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage('');
+
+    if (!email || !password) {
+      setErrorMessage('All fields are required.');
+      return;
+    }
+
     try {
       const response = await fetch(
         'https://journal.bariqfirjatullah.pw/api/auth/login',
@@ -32,12 +40,13 @@ export function SignIn() {
       if (response.ok) {
         localStorage.setItem('token', data.data.token);
         console.log('Login successful');
-        navigate('/dashboard/home');
+        navigate('/dashboard');
       } else {
-        console.error('Login failed', data);
+        setErrorMessage('Login failed: ' + data.message);
       }
     } catch (error) {
       console.error(error);
+      setErrorMessage('An error occurred during login');
     } finally {
       setIsLoading(false);
     }
@@ -99,6 +108,12 @@ export function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+
+          {errorMessage && (
+            <Typography variant='small' color='red' className='mt-2'>
+              {errorMessage}
+            </Typography>
+          )}
 
           <Button className='mt-6' fullWidth type='submit'>
             {isLoading == true ? 'Loading' : 'Sign In'}

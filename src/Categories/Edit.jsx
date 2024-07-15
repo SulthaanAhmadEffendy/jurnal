@@ -92,7 +92,7 @@ function Edit() {
             id='categoryName'
             value={name}
             onChange={handleInputChange}
-            className='w-56 px-3 py-2 border border-gray-300 rounded'
+            className='w-56 px-3 py-2 border border-gray-300 rounded ml-3'
             required
           />
         </div>

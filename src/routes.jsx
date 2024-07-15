@@ -9,6 +9,7 @@ import {
 import { Home, Profile, Tables, Notifications } from '@/pages/dashboard';
 import { SignIn, SignUp } from '@/pages/auth';
 import Index from './Categories/Index';
+import IndexJr from './Journal/IndexJr';
 
 const icon = {
   className: 'w-5 h-5 text-inherit',
@@ -32,9 +33,9 @@ export const routes = [
       // },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: 'journal',
-        path: '/tables',
-        element: <Tables />,
+        name: 'journals',
+        path: '/journals',
+        element: <IndexJr />,
       },
       // {
       //   icon: <InformationCircleIcon {...icon} />,
