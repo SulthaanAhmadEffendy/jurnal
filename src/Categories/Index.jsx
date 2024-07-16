@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Card, CardBody, CardHeader } from '@material-tailwind/react';
+import { Button, Card, CardBody, CardHeader } from '@material-tailwind/react';
 
 function Index() {
   const [categories, setCategories] = useState([]);
@@ -86,19 +86,18 @@ function Index() {
                   categories.map((item) => (
                     <tr key={item.id} className='border-t'>
                       <td className='py-3 px-4'>{item.name}</td>
-                      <td className='py-3 px-4'>
-                        <Link
-                          to={`edit/${item.id}`}
-                          className='text-yellow-300 hover:text-yellow-700 mr-4'
-                        >
-                          Edit
-                        </Link>
-                        <button
+                      <td className='py-3 px-4 flex space-x-2'>
+                        <Button className='bg-yellow-500 hover:bg-yellow-700 text-white py-2 px-2 text-xs'>
+                          <Link to={`edit/${item.id}`} className='inline-block'>
+                            Edit
+                          </Link>
+                        </Button>
+                        <Button
                           onClick={() => handleDeleteClick(item.id)}
-                          className='text-red-600 hover:text-red-800'
+                          className='bg-red-500 hover:bg-red-700 text-white py-2 px-2 text-xs'
                         >
                           Delete
-                        </button>
+                        </Button>
                       </td>
                     </tr>
                   ))
