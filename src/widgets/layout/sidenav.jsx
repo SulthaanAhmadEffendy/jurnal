@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@material-tailwind/react';
 import { useMaterialTailwindController, setOpenSidenav } from '@/context';
+import { useEffect } from 'react';
 
 export function Sidenav({ brandImg, brandName, routes }) {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -17,6 +18,19 @@ export function Sidenav({ brandImg, brandName, routes }) {
     white: 'bg-white shadow-sm',
     transparent: 'bg-transparent',
   };
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (openSidenav && !event.target.closest('aside')) {
+        setOpenSidenav(dispatch, false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [openSidenav, dispatch]);
 
   return (
     <aside

@@ -85,7 +85,6 @@ const IndexJr = () => {
                   <th className='py-3 px-4 text-left'>Status</th>
                   <th className='py-3 px-4 text-left'>Action</th>
                 </tr>
-                {console.log(journals)}
               </thead>
               <tbody>
                 {journals.length ? (
