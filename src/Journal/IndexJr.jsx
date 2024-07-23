@@ -171,14 +171,6 @@ const IndexJr = () => {
       const formattedStartAt = formatDateToYmdHms(newJournal.start_at);
       const formattedEndAt = formatDateToYmdHms(newJournal.end_at);
 
-      console.log('Payload:', {
-        start_at: formattedStartAt,
-        end_at: formattedEndAt,
-        category_id: newJournal.category_id,
-        description: newJournal.description,
-        status: newJournal.status,
-      });
-
       const response = await axios.post(
         'https://journal.bariqfirjatullah.pw/api/journal',
         {
@@ -333,7 +325,7 @@ const IndexJr = () => {
     <>
       <Card>
         <div className='container mx-auto'>
-          <div className='bg-white shadow-md rounded-md p-6 mb-6'>
+          <div className='bg-white   p-6'>
             <h2 className='text-lg font-semibold mb-4'>Add Journal</h2>
             <form onSubmit={handleSubmit}>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
@@ -423,8 +415,9 @@ const IndexJr = () => {
               <Button
                 type='submit'
                 className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                disabled={loading}
               >
-                Add Journal
+                {loading ? 'Adding...' : 'Add'}
               </Button>
             </form>
             {addJournalMessage && (
@@ -439,9 +432,9 @@ const IndexJr = () => {
               </div>
             )}
           </div>
-
+          <hr class='border-t border-black my-4'></hr>
           <CardBody>
-            <div className='text-center m-5 font-bold'>Journals</div>
+            <div className='text-center mb-5 font-bold'>Journals List</div>
             <div className='overflow-x-auto'>
               <table className='w-full min-w-[320px] table-auto rounded-lg'>
                 <thead className='bg-gray-800 text-white rounded-t-lg'>
