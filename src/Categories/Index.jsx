@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Card, CardBody, CardHeader } from '@material-tailwind/react';
+import { Button, Card, CardBody } from '@material-tailwind/react';
 
 function Index() {
   const [categories, setCategories] = useState([]);
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -28,6 +30,8 @@ function Index() {
     } catch (error) {
       console.error('Failed to fetch categories:', error);
       setCategories([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,17 +49,27 @@ function Index() {
         }
       );
       setMessage('Category deleted successfully.');
+      setIsError(false);
       setTimeout(() => {
         setMessage('');
       }, 3000);
       fetchCategories();
     } catch (error) {
-      console.log('Error deleting category:', error);
+      setMessage('Error deleting category:', error);
+      if (error.response && error.response.status === 500) {
+        setMessage('Error, categories related to journals.');
+      } else {
+        setMessage('Failed to delete category.');
+      }
+      setIsError(true);
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
     }
   };
 
   const handleDeleteClick = (id) => {
-    if (window.confirm('Are you sure to deleting this category')) {
+    if (window.confirm('Are you sure to delete this category?')) {
       deleteCategory(id);
     }
   };
@@ -77,12 +91,18 @@ function Index() {
             <table className='w-full min-w-[320px] table-auto rounded-lg'>
               <thead className='bg-gray-800 text-white rounded-t-lg'>
                 <tr>
-                  <th className='py-3 px-4 text-left'>Kategori Pekerjaan</th>
+                  <th className='py-3 px-4 text-left'>Category Jobs</th>
                   <th className='py-3 px-4 text-left'>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {categories.length ? (
+                {loading ? (
+                  <tr>
+                    <td colSpan='2' className='text-center py-4'>
+                      Processing...
+                    </td>
+                  </tr>
+                ) : categories.length ? (
                   categories.map((item) => (
                     <tr key={item.id} className='border-t'>
                       <td className='py-3 px-4'>{item.name}</td>
@@ -113,7 +133,15 @@ function Index() {
           </div>
         </CardBody>
       </div>
-      {message && <p className='text-green-500 text-center mt-4'>{message}</p>}
+      {message && (
+        <p
+          className={`text-center mt-4 ${
+            isError ? 'text-red-500' : 'text-green-500'
+          }`}
+        >
+          {message}
+        </p>
+      )}
     </Card>
   );
 }

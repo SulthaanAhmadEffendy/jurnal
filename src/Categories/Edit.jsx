@@ -7,6 +7,8 @@ function Edit() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     getCategoryById();
@@ -36,6 +38,7 @@ function Edit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const token = localStorage.getItem('token');
     try {
       const response = await axios.put(
@@ -52,6 +55,7 @@ function Edit() {
 
       if (response.status === 200) {
         setMessage('Category updated successfully.');
+        setIsError(false);
         setTimeout(() => {
           setMessage('');
         }, 3000);
@@ -63,6 +67,7 @@ function Edit() {
         setMessage(
           `Failed to update category. Status code: ${response.status}`
         );
+        setIsError(true);
         setTimeout(() => {
           setMessage('');
         }, 3000);
@@ -73,6 +78,9 @@ function Edit() {
         console.error('Server responded with:', error.response.data);
       }
       setMessage(`Error: ${error.message}`);
+      setIsError(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,12 +106,18 @@ function Edit() {
         </div>
         <button
           type='submit'
-          className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
+          className='bg-blue-500 text-white py-2 px-4 rounded
+           hover:bg-blue-600'
+          disabled={loading}
         >
-          Update
+          {loading ? 'Updating' : 'Update'}
         </button>
       </form>
-      {message && <p className='mt-4 text-green-500'>{message}</p>}
+      {message && (
+        <p className={`mt-4 ${isError ? 'text-red-500' : 'text-green-500'}`}>
+          {message}
+        </p>
+      )}
     </div>
   );
 }

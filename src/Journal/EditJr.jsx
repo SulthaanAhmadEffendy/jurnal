@@ -13,6 +13,8 @@ const EditJr = () => {
   const [status, setStatus] = useState('progress');
   const [categories, setCategories] = useState([]);
   const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const fetchJournal = async () => {
@@ -71,6 +73,8 @@ const EditJr = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
+    setMessage('');
     try {
       const token = localStorage.getItem('token');
 
@@ -103,6 +107,7 @@ const EditJr = () => {
 
       if (response.status === 200) {
         setMessage('Journal updated successfully.');
+        setIsError(false);
         setTimeout(() => {
           setMessage('');
         }, 3000);
@@ -112,6 +117,7 @@ const EditJr = () => {
         }, 1500);
       } else {
         setMessage(`Failed to update journal. Status code: ${response.status}`);
+        setIsError(true);
         setTimeout(() => {
           setMessage('');
         }, 3000);
@@ -122,6 +128,9 @@ const EditJr = () => {
         console.error('Server responded with:', error.response.data);
       }
       setMessage(`Error: ${error.message}`);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -204,12 +213,18 @@ const EditJr = () => {
         </div>
         <button
           type='submit'
-          className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
+          className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600
+          '
+          disabled={isLoading}
         >
-          Update
+          {isLoading ? 'Updating' : 'Update'}
         </button>
       </form>
-      {message && <p className='mt-4 text-green-500'>{message}</p>}
+      {message && (
+        <p className={`mt-4 ${isError ? 'text-red-500' : 'text-green-500'}`}>
+          {message}
+        </p>
+      )}
     </div>
   );
 };

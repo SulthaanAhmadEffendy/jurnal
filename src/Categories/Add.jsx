@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 function Add() {
   const [categoryName, setCategoryName] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
   const navigate = useNavigate();
 
   const handleInputChange = (event) => {
@@ -13,6 +16,7 @@ function Add() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
@@ -29,6 +33,7 @@ function Add() {
 
       if (response.status === 200) {
         setMessage('Kategori berhasil ditambahkan!');
+        setIsError(false);
         setTimeout(() => {
           setMessage('');
         }, 3000);
@@ -40,6 +45,7 @@ function Add() {
         setMessage(
           `Gagal menambahkan kategori. Status code: ${response.status}`
         );
+        setIsError(true);
         setTimeout(() => {
           setMessage('');
         }, 3000);
@@ -47,6 +53,9 @@ function Add() {
     } catch (error) {
       console.error('Error adding category:', error);
       setMessage(`Terjadi kesalahan: ${error.message}`);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,18 +75,23 @@ function Add() {
             id='categoryName'
             value={categoryName}
             onChange={handleInputChange}
-            className='w-56 px-3 py-2 border border-gray-300 rounded '
+            className='w-56 px-3 py-2 border border-gray-300 rounded ml-3'
             required
           />
         </div>
         <button
           type='submit'
           className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
+          disabled={loading}
         >
-          Add
+          {loading ? 'Adding' : 'Add'}
         </button>
       </form>
-      {message && <p className='mt-4 text-green-500'>{message}</p>}
+      {message && (
+        <p className={`mt-4 ${isError ? 'text-red-500' : 'text-green-500'}`}>
+          {message}
+        </p>
+      )}
     </div>
   );
 }
